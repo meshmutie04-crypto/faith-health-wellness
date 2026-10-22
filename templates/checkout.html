@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% set active_page = 'products' %}
+{% block content %}
+
+<section class="container" style="padding: 50px 20px; max-width: 900px;">
+
+    <div class="section-heading">
+        <h2>Delivery Details</h2>
+    </div>
+    <p class="section-sub">Fill in your delivery information. When you submit, your order will be sent directly to Madam Faith on WhatsApp for confirmation.</p>
+
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px;">
+
+        <!-- ---------- FORM ---------- -->
+        <form method="POST" action="/checkout" class="card" style="padding: 28px;">
+
+            <div class="form-group">
+                <label for="name">Full Name <span class="req">*</span></label>
+                <input type="text" id="name" name="name" class="form-control" required
+                       value="{{ form.name }}" placeholder="e.g. Mary Wanjiku">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">Phone (WhatsApp) <span class="req">*</span></label>
+                    <input type="tel" id="phone" name="phone" class="form-control" required
+                           value="{{ form.phone }}" placeholder="e.g. 0712 345 678">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email <span style="color:#999; font-weight:400; font-size:0.72rem;">(optional)</span></label>
+                    <input type="email" id="email" name="email" class="form-control"
+                           value="{{ form.email }}" placeholder="you@example.com">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="county">County <span class="req">*</span></label>
+                    <select id="county" name="county" class="form-control" required>
+                        <option value="">-- Select County --</option>
+                        {% set counties = [
+                            'Mombasa','Kwale','Kilifi','Tana River','Lamu','Taita Taveta',
+                            'Garissa','Wajir','Mandera','Marsabit','Isiolo','Meru',
+                            'Tharaka Nithi','Embu','Kitui','Machakos','Makueni','Nyandarua',
+                            'Nyeri','Kirinyaga','Muranga','Kiambu','Turkana','West Pokot',
+                            'Samburu','Trans Nzoia','Uasin Gishu','Elgeyo Marakwet','Nandi',
+                            'Baringo','Laikipia','Nakuru','Narok','Kajiado','Kericho',
+                            'Bomet','Kakamega','Vihiga','Bungoma','Busia','Siaya',
+                            'Kisumu','Homa Bay','Migori','Kisii','Nyamira','Nairobi'
+                        ] %}
+                        {% for c in counties %}
+                        <option value="{{ c }}" {% if form.county == c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="town">Town / Area <span class="req">*</span></label>
+                    <input type="text" id="town" name="town" class="form-control" required
+                           value="{{ form.town }}" placeholder="e.g. Nyali, Kisauni, CBD">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Physical Address / Landmark <span style="color:#999; font-weight:400; font-size:0.72rem;">(optional)</span></label>
+                <input type="text" id="address" name="address" class="form-control"
+                       value="{{ form.address }}" placeholder="e.g. Near City Mall, house number">
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Notes for Madam Faith <span style="color:#999; font-weight:400; font-size:0.72rem;">(optional)</span></label>
+                <textarea id="notes" name="notes" class="form-control"
+                          placeholder="Any special instructions or questions?">{{ form.notes }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-wa" style="width: 100%; justify-content: center; padding: 13px; font-size: 0.95rem;">
+                <i class="fab fa-whatsapp"></i> Submit Order via WhatsApp
+            </button>
+
+            <p style="font-size: 0.72rem; color: #999; margin-top: 12px; text-align: center;">
+                By submitting, your order details will open in WhatsApp so you can send them directly to Madam Faith for confirmation and payment.
+            </p>
+
+        </form>
+
+        <!-- ---------- ORDER SUMMARY ---------- -->
+        <div class="card" style="padding: 24px; height: fit-content;">
+            <h3 style="font-size: 1rem; color: var(--purple-dark); margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border-light;">
+                Order Summary
+            </h3>
+
+            {% for item in items %}
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #eee;">
+                <div style="flex: 1; padding-right: 8px;">
+                    <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-dark);">{{ item.product.name }}</div>
+                    <div style="font-size: 0.72rem; color: #999;">{{ item.product.code }} &middot; x{{ item.qty }}</div>
+                </div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--purple-dark); white-space: nowrap;">
+                    KES {{ "{:,}".format(item.subtotal) }}
+                </div>
+            </div>
+            {% endfor %}
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">TOTAL</div>
+                <div style="font-size: 1.4rem; font-weight: 800; color: var(--purple-dark);">KES {{ "{:,}".format(total) }}</div>
+            </div>
+
+            <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border-light); font-size: 0.72rem; color: #999; line-height: 1.6;">
+                <i class="fas fa-info-circle" style="color: var(--purple);"></i>
+                Delivery fee is confirmed via WhatsApp depending on your location.
+            </div>
+
+            <a href="/cart" style="display: inline-block; margin-top: 14px; font-size: 0.82rem; color: var(--purple); text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Edit Order
+            </a>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

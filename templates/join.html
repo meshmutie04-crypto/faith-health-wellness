@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% set active_page = 'join' %}
+{% block content %}
+
+<section class="container" style="padding: 50px 20px; max-width: 950px;">
+
+    <div class="section-heading">
+        <h2>Become a Member &amp; Save</h2>
+    </div>
+    <p class="section-sub">
+        Join as a member and save up to <strong style="color: var(--green-dark);">KES 2,500</strong> on selected products.
+    </p>
+
+    <div class="card" style="margin-bottom: 34px; background: linear-gradient(135deg, #f5f0ff 0%, #e8f5e9 100%); border: none;">
+        <h3 style="color: var(--purple-dark); margin-bottom: 14px; font-size: 1.15rem;">Why become a member?</h3>
+        <ul style="list-style: none; padding: 0;">
+            <li style="padding: 7px 0; color: #444; font-size: 0.9rem;"><i class="fas fa-check-circle" style="color: var(--green-dark); margin-right: 10px;"></i> Get exclusive distributor pricing on all products</li>
+            <li style="padding: 7px 0; color: #444; font-size: 0.9rem;"><i class="fas fa-check-circle" style="color: var(--green-dark); margin-right: 10px;"></i> Access to business training and support</li>
+            <li style="padding: 7px 0; color: #444; font-size: 0.9rem;"><i class="fas fa-check-circle" style="color: var(--green-dark); margin-right: 10px;"></i> Earn from referrals and build your own network</li>
+            <li style="padding: 7px 0; color: #444; font-size: 0.9rem;"><i class="fas fa-check-circle" style="color: var(--green-dark); margin-right: 10px;"></i> Priority customer service from Madam Faith</li>
+        </ul>
+        <a href="https://wa.me/254743599932?text=Hello%20Madam%20Faith%20I%20want%20to%20join%20as%20a%20member"
+           class="btn btn-wa" style="margin-top: 20px;" target="_blank">
+            <i class="fab fa-whatsapp"></i> Join Now on WhatsApp
+        </a>
+    </div>
+
+    <h3 style="font-size: 1.25rem; color: var(--purple-dark); margin-bottom: 16px;">Price Comparison (Retail vs Distributor)</h3>
+
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.05); border: 1px solid var(--border-light);">
+            <thead>
+                <tr style="background: var(--purple-dark); color: white;">
+                    <th style="padding: 13px 14px; text-align: left; font-size: 0.8rem; letter-spacing: 0.5px;">CODE</th>
+                    <th style="padding: 13px 14px; text-align: left; font-size: 0.8rem; letter-spacing: 0.5px;">PRODUCT</th>
+                    <th style="padding: 13px 14px; text-align: right; font-size: 0.8rem; letter-spacing: 0.5px;">RETAIL (KES)</th>
+                    <th style="padding: 13px 14px; text-align: right; font-size: 0.8rem; letter-spacing: 0.5px;">DISTRIBUTOR (KES)</th>
+                    <th style="padding: 13px 14px; text-align: right; font-size: 0.8rem; letter-spacing: 0.5px;">YOU SAVE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr style="border-bottom: 1px solid #f4f4f4;">
+                    <td style="padding: 11px 14px; font-size: 0.8rem; color: #999;">{{ p.code }}</td>
+                    <td style="padding: 11px 14px; font-size: 0.87rem; font-weight: 500;">{{ p.name }}</td>
+                    <td style="padding: 11px 14px; text-align: right; font-size: 0.87rem;">{{ "{:,}".format(p.retail) }}</td>
+                    <td style="padding: 11px 14px; text-align: right; font-size: 0.87rem; color: var(--green-dark); font-weight: 600;">{{ "{:,}".format(p.dist) }}</td>
+                    <td style="padding: 11px 14px; text-align: right; font-size: 0.87rem; color: #e65100; font-weight: 600;">{{ "{:,}".format(p.retail - p.dist) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p style="font-size: 0.78rem; color: #999; margin-top: 16px; text-align: center;">
+        * Distributor prices are exclusive to registered members. Contact Madam Faith to register.
+    </p>
+
+</section>
+
+{% endblock %}

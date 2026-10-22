@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="container" style="padding: 50px 20px; max-width: 720px;">
+
+    <a href="/products" style="color: var(--purple); text-decoration: none; font-weight: 500; font-size: 0.9rem;">
+        <i class="fas fa-arrow-left"></i> Back to Products
+    </a>
+
+    <div class="card" style="margin-top: 22px; padding: 36px;">
+        <span class="badge" style="background: #f5f0ff; color: var(--purple-dark); margin-bottom: 14px; display: inline-block;">{{ product.code }}</span>
+        <h1 style="font-size: 1.8rem; color: var(--purple-dark); margin-bottom: 6px; font-weight: 700;">{{ product.name }}</h1>
+        <p style="color: #999; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 18px;">{{ product.category }}</p>
+        <p style="color: #555; font-size: 0.98rem; margin-bottom: 24px; line-height: 1.7;">{{ product.benefit }}</p>
+
+        <div style="border-top: 1px solid var(--border-light); padding-top: 20px;">
+            <p style="font-size: 1.6rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 4px;">KES {{ "{:,}".format(product.retail) }}</p>
+            <p style="font-size: 0.8rem; color: #999; margin-bottom: 20px;">Member Price Available &mdash; Ask on WhatsApp</p>
+
+            <a href="{{ product.name|whatsapp_link(product.code) }}" class="btn btn-wa" target="_blank">
+                <i class="fab fa-whatsapp"></i> Order on WhatsApp
+            </a>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

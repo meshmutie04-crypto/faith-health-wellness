@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% set active_page = 'home' %}
+{% block content %}
+
+<!-- ==================== HERO ==================== -->
+<section style="background: linear-gradient(135deg, #f5f0ff 0%, #e8f5e9 100%); padding: 60px 0;">
+    <div class="container">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+
+            <div>
+                <span class="badge" style="background: var(--yellow); color: var(--purple-dark); margin-bottom: 14px; display: inline-block; padding: 4px 12px;">AUTHORIZED DISTRIBUTOR</span>
+                <h1 style="font-size: 2.6rem; font-weight: 800; color: var(--purple-dark); line-height: 1.15; margin-bottom: 14px;">
+                    A Healthier You<br>
+                    For a <span style="color: var(--green-dark);">Brighter Tomorrow</span>
+                </h1>
+                <p style="font-size: 1rem; color: var(--text-muted); margin-bottom: 18px; font-weight: 500; letter-spacing: 1px;">
+                    HEALTH &bull; JOY &bull; PEACE
+                </p>
+                <p style="font-style: italic; color: #555; border-left: 4px solid var(--green); padding-left: 16px; margin-bottom: 26px; font-size: 0.92rem; line-height: 1.7;">
+                    "Health is the most crucial thing in life. You may have money but without good health you cannot enjoy peace. I guide you on how to walk a journey of good Health, Joy and Peace."
+                    <br><strong style="color: var(--purple-dark);">&mdash; Madam Faith</strong>, Former Cyber Owner now Eternal Distributor, Mombasa.
+                </p>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="tel:0743599932" class="btn btn-purple">
+                        <i class="fas fa-phone"></i> Call Now
+                    </a>
+                    <a href="https://wa.me/254743599932?text=Hello%20Madam%20Faith%20I%20am%20interested%20in%20your%20products"
+                       class="btn btn-wa" target="_blank">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, var(--purple), var(--green-dark)); border-radius: 16px; padding: 44px 32px; color: white; text-align: center; box-shadow: 0 12px 40px rgba(123,47,247,0.2);">
+                <i class="fas fa-heartbeat" style="font-size: 3.5rem; margin-bottom: 18px; color: var(--yellow);"></i>
+                <h3 style="font-size: 1.4rem; margin-bottom: 10px; font-weight: 700;">Your Health &mdash; My Priority</h3>
+                <p style="opacity: 0.92; font-size: 0.92rem;">Eternal Health Products available for nationwide delivery.</p>
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.25); font-size: 0.82rem; opacity: 0.85;">
+                    <i class="fas fa-tag"></i> Member prices available &mdash; ask on WhatsApp
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 3 PILLARS ==================== -->
+<section class="container" style="padding: 60px 20px;">
+    <div class="section-heading">
+        <h2>Our 3 Pillars</h2>
+    </div>
+    <p class="section-sub">The foundation of everything we do at Faith Health &amp; Wellness.</p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px;">
+        <div class="card text-center">
+            <i class="fas fa-dumbbell" style="font-size: 2.2rem; color: var(--purple); margin-bottom: 14px;"></i>
+            <h3 style="color: var(--purple-dark); margin-bottom: 8px; font-size: 1.1rem;">GOOD HEALTH</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Feel stronger, more energetic and live fully.</p>
+        </div>
+        <div class="card text-center">
+            <i class="fas fa-smile-beam" style="font-size: 2.2rem; color: var(--green-dark); margin-bottom: 14px;"></i>
+            <h3 style="color: var(--green-dark); margin-bottom: 8px; font-size: 1.1rem;">JOY</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">A healthy body brings a brighter mind and a happier heart.</p>
+        </div>
+        <div class="card text-center">
+            <i class="fas fa-dove" style="font-size: 2.2rem; color: var(--purple); margin-bottom: 14px;"></i>
+            <h3 style="color: var(--purple-dark); margin-bottom: 8px; font-size: 1.1rem;">PEACE</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Good health gives you the freedom to enjoy life and feel at peace.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SHOP BY CATEGORY (clickable cards) ==================== -->
+<section style="background: white; padding: 60px 0;">
+    <div class="container">
+        <div class="section-heading">
+            <h2>Shop by Category</h2>
+        </div>
+        <p class="section-sub">Click a category to see the products inside. Every product is organized by health concern.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px;">
+            {% for cat in categories %}
+            <a href="/category/{{ cat.slug }}" class="category-card">
+                <div class="cat-icon">
+                    <i class="fas {{ cat.icon }}"></i>
+                </div>
+                <h3>{{ cat.name }}</h3>
+                <p>{{ cat.description }}</p>
+                <div class="cat-footer">
+                    <span class="cat-count">{{ cat.count }} Products</span>
+                    <span class="cat-link">Browse <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== TRUST STRIP ==================== -->
+<section style="background: var(--cream); padding: 50px 0;">
+    <div class="container">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; text-align: center;">
+            <div>
+                <i class="fas fa-truck-fast" style="font-size: 1.8rem; color: var(--purple); margin-bottom: 10px;"></i>
+                <h4 style="font-size: 0.95rem; color: var(--purple-dark); margin-bottom: 4px;">Countrywide Delivery</h4>
+                <p style="font-size: 0.82rem; color: var(--text-muted);">We ship to every county in Kenya.</p>
+            </div>
+            <div>
+                <i class="fas fa-shield-halved" style="font-size: 1.8rem; color: var(--green-dark); margin-bottom: 10px;"></i>
+                <h4 style="font-size: 0.95rem; color: var(--purple-dark); margin-bottom: 4px;">Authentic Products</h4>
+                <p style="font-size: 0.82rem; color: var(--text-muted);">Sourced from Eternal International.</p>
+            </div>
+            <div>
+                <i class="fas fa-headset" style="font-size: 1.8rem; color: var(--purple); margin-bottom: 10px;"></i>
+                <h4 style="font-size: 0.95rem; color: var(--purple-dark); margin-bottom: 4px;">Personal Guidance</h4>
+                <p style="font-size: 0.82rem; color: var(--text-muted);">Direct support from Madam Faith.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

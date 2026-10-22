@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% set active_page = 'products' %}
+{% block content %}
+
+<section class="container" style="padding: 50px 20px; max-width: 900px;">
+
+    <div class="section-heading">
+        <h2>Your Order</h2>
+    </div>
+    <p class="section-sub">Review your items, adjust quantities, and then proceed to delivery details.</p>
+
+    {% if items %}
+    <form method="POST" action="/cart/update">
+        <div class="card" style="padding: 0; overflow: hidden;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: var(--purple-dark); color: white;">
+                        <th style="padding: 12px 14px; text-align: left; font-size: 0.78rem; letter-spacing: 0.5px;">PRODUCT</th>
+                        <th style="padding: 12px 14px; text-align: right; font-size: 0.78rem; letter-spacing: 0.5px;">PRICE</th>
+                        <th style="padding: 12px 14px; text-align: center; font-size: 0.78rem; letter-spacing: 0.5px;">QTY</th>
+                        <th style="padding: 12px 14px; text-align: right; font-size: 0.78rem; letter-spacing: 0.5px;">SUBTOTAL</th>
+                        <th style="padding: 12px 14px; text-align: center; font-size: 0.78rem; letter-spacing: 0.5px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr style="border-bottom: 1px solid var(--border-light);">
+                        <td style="padding: 14px;">
+                            <div style="font-weight: 600; font-size: 0.92rem;">{{ item.product.name }}</div>
+                            <div style="font-size: 0.72rem; color: #999; margin-top: 2px;">{{ item.product.code }} &middot; {{ item.product.category }}</div>
+                        </td>
+                        <td style="padding: 14px; text-align: right; font-size: 0.88rem;">KES {{ "{:,}".format(item.product.retail) }}</td>
+                        <td style="padding: 14px; text-align: center;">
+                            <input type="number" name="qty_{{ item.product.code }}" value="{{ item.qty }}" min="1"
+                                   style="width: 60px; padding: 6px 8px; border: 1.5px solid #ddd; border-radius: 6px; text-align: center; font-family: 'Poppins',sans-serif;">
+                        </td>
+                        <td style="padding: 14px; text-align: right; font-size: 0.9rem; font-weight: 700; color: var(--purple-dark);">KES {{ "{:,}".format(item.subtotal) }}</td>
+                        <td style="padding: 14px; text-align: center;">
+                            <button type="submit" formaction="/cart/remove/{{ item.product.code }}" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.72rem;" title="Remove">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; flex-wrap: wrap; gap: 12px;">
+            <div>
+                <button type="submit" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.85rem;">
+                    <i class="fas fa-sync"></i> Update Quantities
+                </button>
+                <button type="submit" formaction="/cart/clear" class="btn" style="background: #f0f0f0; color: #555; padding: 8px 16px; font-size: 0.85rem;"
+                        onclick="return confirm('Clear entire order?');">
+                    <i class="fas fa-times"></i> Clear Order
+                </button>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 0.78rem; color: #999;">TOTAL</div>
+                <div style="font-size: 1.6rem; font-weight: 800; color: var(--purple-dark);">KES {{ "{:,}".format(total) }}</div>
+            </div>
+        </div>
+    </form>
+
+    <div style="margin-top: 30px; display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap;">
+        <a href="/products" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> Continue Shopping
+        </a>
+        <a href="/checkout" class="btn btn-wa">
+            <i class="fas fa-truck"></i> Proceed to Delivery Details
+        </a>
+    </div>
+
+    {% else %}
+    <div class="card text-center" style="padding: 60px 20px;">
+        <i class="fas fa-shopping-basket" style="font-size: 3rem; color: #ddd; margin-bottom: 16px;"></i>
+        <h3 style="color: var(--text-dark); margin-bottom: 8px;">Your order is empty</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Browse our products and add items to your order.</p>
+        <a href="/products" class="btn btn-purple">
+            <i class="fas fa-th-large"></i> Browse Products
+        </a>
+    </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}
