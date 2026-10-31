@@ -2,7 +2,6 @@
 {% set active_page = 'products' %}
 {% block content %}
 
-<!-- ==================== CATEGORY BREADCRUMB + HEADER ==================== -->
 <section style="background: linear-gradient(135deg, #f5f0ff 0%, #e8f5e9 100%); padding: 40px 0;">
     <div class="container">
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -17,12 +16,8 @@
                 <i class="fas {{ category.icon }}"></i>
             </div>
             <div style="flex: 1; min-width: 200px;">
-                <h1 style="font-size: 2rem; font-weight: 800; color: var(--purple-dark); line-height: 1.15;">
-                    {{ category.name }}
-                </h1>
-                <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 4px;">
-                    {{ category.description }}
-                </p>
+                <h1 style="font-size: 2rem; font-weight: 800; color: var(--purple-dark); line-height: 1.15;">{{ category.name }}</h1>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 4px;">{{ category.description }}</p>
             </div>
             <span class="badge" style="background: var(--purple); color: white; padding: 6px 14px; font-size: 0.8rem; border-radius: 20px;">
                 {{ products|length }} Product{{ 's' if products|length != 1 else '' }}
@@ -31,9 +26,7 @@
     </div>
 </section>
 
-<!-- ==================== PRODUCTS IN THIS CATEGORY ==================== -->
 <section class="container" style="padding: 50px 20px;">
-
     {% if products %}
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
         {% for p in products %}
@@ -49,9 +42,17 @@
             <div>
                 <p style="font-size: 1.15rem; font-weight: 700; color: var(--purple-dark);">KES {{ "{:,}".format(p.retail) }}</p>
                 <p style="font-size: 0.7rem; color: #999; margin-bottom: 10px;">Member Price Available &mdash; Ask on WhatsApp</p>
-                <a href="{{ p.name|whatsapp_link(p.code) }}" class="btn btn-wa" style="width: 100%; justify-content: center;" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Order on WhatsApp
-                </a>
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                    <form method="POST" action="/cart/add/{{ p.code }}" style="flex: 1;">
+                        <button type="submit" class="btn btn-purple" style="width: 100%; justify-content: center; padding: 9px; font-size: 0.82rem;">
+                            <i class="fas fa-cart-plus"></i> Add to Order
+                        </button>
+                    </form>
+                    <a href="{{ p.name|whatsapp_link(p.code) }}" class="btn btn-wa" target="_blank"
+                       style="padding: 9px 12px; font-size: 0.82rem;" title="Order directly on WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
             </div>
         </div>
         {% endfor %}
@@ -60,31 +61,22 @@
     <p class="text-center" style="color: #999; padding: 40px 0;">No products available in this category yet.</p>
     {% endif %}
 
-    <!-- ---------- BACK + CTA ---------- -->
     <div class="text-center" style="margin-top: 40px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-        <a href="/products" class="btn btn-outline">
-            <i class="fas fa-arrow-left"></i> All Categories
-        </a>
+        <a href="/products" class="btn btn-outline"><i class="fas fa-arrow-left"></i> All Categories</a>
         <a href="https://wa.me/254743599932?text=Hello%20Madam%20Faith%20I%20want%20advice%20on%20{{ category.name|urlencode }}%20products"
            class="btn btn-wa" target="_blank">
             <i class="fab fa-whatsapp"></i> Ask about {{ category.name }}
         </a>
     </div>
-
 </section>
 
-<!-- ==================== OTHER CATEGORIES ==================== -->
 <section style="background: white; padding: 50px 0;">
     <div class="container">
-        <div class="section-heading">
-            <h2>Explore Other Categories</h2>
-        </div>
+        <div class="section-heading"><h2>Explore Other Categories</h2></div>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-top: 24px;">
             {% for c in categories if c.slug != category.slug %}
             <a href="/category/{{ c.slug }}" class="category-card" style="padding: 18px 16px;">
-                <div class="cat-icon" style="width: 42px; height: 42px; font-size: 1rem;">
-                    <i class="fas {{ c.icon }}"></i>
-                </div>
+                <div class="cat-icon" style="width: 42px; height: 42px; font-size: 1rem;"><i class="fas {{ c.icon }}"></i></div>
                 <h3 style="font-size: 0.92rem;">{{ c.name }}</h3>
             </a>
             {% endfor %}

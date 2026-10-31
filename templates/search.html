@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% set active_page = 'products' %}
+{% block content %}
+
+<section class="container" style="padding: 50px 20px;">
+
+    <div class="section-heading">
+        <h2>Search Results</h2>
+    </div>
+
+    {% if query %}
+        <p class="section-sub">
+            Showing <strong>{{ results|length }}</strong> result{{ 's' if results|length != 1 else '' }} for
+            "<strong style="color: var(--purple-dark);">{{ query }}</strong>"
+        </p>
+    {% else %}
+        <p class="section-sub">Type a product name, code (e.g. A014), or category in the search bar above.</p>
+    {% endif %}
+
+    {% if results %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
+        {% for p in results %}
+        <div class="card" style="padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span class="badge" style="background: #f5f0ff; color: var(--purple-dark);">{{ p.code }}</span>
+                    <span class="badge" style="background: #e8f5e9; color: var(--green-dark);">IN STOCK</span>
+                </div>
+                <p style="font-size: 0.7rem; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">{{ p.category }}</p>
+                <h4 style="font-size: 1rem; color: var(--text-dark); margin: 4px 0 8px; font-weight: 600;">{{ p.name }}</h4>
+                <p style="font-size: 0.83rem; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;">{{ p.benefit }}</p>
+            </div>
+            <div>
+                <p style="font-size: 1.15rem; font-weight: 700; color: var(--purple-dark);">KES {{ "{:,}".format(p.retail) }}</p>
+                <p style="font-size: 0.7rem; color: #999; margin-bottom: 10px;">Member Price Available &mdash; Ask on WhatsApp</p>
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                    <form method="POST" action="/cart/add/{{ p.code }}" style="flex: 1;">
+                        <button type="submit" class="btn btn-purple" style="width: 100%; justify-content: center; padding: 9px; font-size: 0.82rem;">
+                            <i class="fas fa-cart-plus"></i> Add to Order
+                        </button>
+                    </form>
+                    <a href="{{ p.name|whatsapp_link(p.code) }}" class="btn btn-wa" target="_blank"
+                       style="padding: 9px 12px; font-size: 0.82rem;" title="Order directly on WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% elif query %}
+    <div class="card text-center" style="padding: 50px 20px;">
+        <i class="fas fa-search" style="font-size: 2.5rem; color: #ddd; margin-bottom: 14px;"></i>
+        <h3 style="color: var(--text-dark); margin-bottom: 6px;">No results for "{{ query }}"</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Try a different product name or code.</p>
+        <a href="/products" class="btn btn-purple"><i class="fas fa-th-large"></i> Browse All Products</a>
+    </div>
+    {% endif %}
+
+    <div class="text-center" style="margin-top: 40px;">
+        <a href="/products" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> All Categories
+        </a>
+    </div>
+
+</section>
+
+{% endblock %}

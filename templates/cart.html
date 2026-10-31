@@ -3,10 +3,7 @@
 {% block content %}
 
 <section class="container" style="padding: 50px 20px; max-width: 900px;">
-
-    <div class="section-heading">
-        <h2>Your Order</h2>
-    </div>
+    <div class="section-heading"><h2>Your Order</h2></div>
     <p class="section-sub">Review your items, adjust quantities, and then proceed to delivery details.</p>
 
     {% if items %}
@@ -64,12 +61,8 @@
     </form>
 
     <div style="margin-top: 30px; display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap;">
-        <a href="/products" class="btn btn-outline">
-            <i class="fas fa-arrow-left"></i> Continue Shopping
-        </a>
-        <a href="/checkout" class="btn btn-wa">
-            <i class="fas fa-truck"></i> Proceed to Delivery Details
-        </a>
+        <a href="/products" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+        <a href="/checkout" class="btn btn-wa"><i class="fas fa-truck"></i> Proceed to Delivery Details</a>
     </div>
 
     {% else %}
@@ -77,12 +70,9 @@
         <i class="fas fa-shopping-basket" style="font-size: 3rem; color: #ddd; margin-bottom: 16px;"></i>
         <h3 style="color: var(--text-dark); margin-bottom: 8px;">Your order is empty</h3>
         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Browse our products and add items to your order.</p>
-        <a href="/products" class="btn btn-purple">
-            <i class="fas fa-th-large"></i> Browse Products
-        </a>
+        <a href="/products" class="btn btn-purple"><i class="fas fa-th-large"></i> Browse Products</a>
     </div>
     {% endif %}
-
 </section>
 
 {% endblock %}

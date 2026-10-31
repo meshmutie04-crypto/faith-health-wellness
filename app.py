@@ -1,9 +1,3 @@
-# ============================================================
-# FILE: app.py
-# PROJECT: Faith Health & Wellness
-# PURPOSE: Flask backend — routes, product data, WhatsApp links,
-#          cart + delivery checkout
-# ============================================================
 from flask import (
     Flask, render_template, request, abort,
     session, redirect, url_for, flash
@@ -11,50 +5,38 @@ from flask import (
 import urllib.parse
 
 app = Flask(__name__)
-app.secret_key = "faith-health-wellness-secret-2026"  # required for session
+app.secret_key = "faith-health-wellness-secret-2026"
 
 # ------------------------------------------------------------
 # PRODUCT DATA
-# NOTE: distributor price ("dist") stored but NOT shown publicly.
-# Only shown on /join page for recruitment.
 # ------------------------------------------------------------
 products = [
-    # Weight Management
     {"code": "A014", "name": "Chrysanthemum Tea", "category": "Weight Management", "retail": 2760, "dist": 2300, "benefit": "Supports weight management and detox."},
-    # Sleep Aid
     {"code": "A034", "name": "Peanut Sprout", "category": "Sleep Aid", "retail": 4860, "dist": 4050, "benefit": "Promotes restful sleep and relaxation."},
-    # Men's Reproductive Health
     {"code": "A066", "name": "Vitality Coffee", "category": "Men's Reproductive Health", "retail": 2100, "dist": 1750, "benefit": "Boosts men's vitality and reproductive health."},
     {"code": "A053", "name": "Chitosan", "category": "Men's Reproductive Health", "retail": 4080, "dist": 3400, "benefit": "Supports men's reproductive system and energy."},
     {"code": "A032", "name": "Saw Palmetto Polypeptide Capsule", "category": "Men's Reproductive Health", "retail": 4080, "dist": 3400, "benefit": "Promotes prostate health and male wellness."},
-    # Immune Boosters
     {"code": "A043", "name": "Gyrophora Tea", "category": "Immune Boosters", "retail": 3480, "dist": 2900, "benefit": "Strengthens immune system and overall wellness."},
     {"code": "A045", "name": "Cordyceps Tea", "category": "Immune Boosters", "retail": 3480, "dist": 2900, "benefit": "Enhances immunity and energy levels."},
     {"code": "A060", "name": "Broken Ganoderma Capsules", "category": "Immune Boosters", "retail": 4860, "dist": 4050, "benefit": "Powerful immune support and antioxidant."},
     {"code": "A067", "name": "Reishi Coffee", "category": "Immune Boosters", "retail": 2460, "dist": 2050, "benefit": "Immunity-boosting coffee for daily wellness."},
     {"code": "A069", "name": "Cordyceps Coffee", "category": "Immune Boosters", "retail": 2460, "dist": 2050, "benefit": "Energy and immune support in every cup."},
-    # Digestive Health
     {"code": "A003", "name": "Isomalto", "category": "Digestive Health", "retail": 10560, "dist": 8800, "benefit": "Promotes healthy digestion and gut flora."},
-    # Daily Usage
     {"code": "A036", "name": "Toothpaste", "category": "Daily Usage", "retail": 912, "dist": 760, "benefit": "Natural oral care for daily freshness."},
-    # Cerebrovascular Health
     {"code": "A022", "name": "Fish Oil", "category": "Cerebrovascular Health", "retail": 4080, "dist": 3400, "benefit": "Supports brain and cardiovascular health."},
     {"code": "A044", "name": "Ginkgo Tea", "category": "Cerebrovascular Health", "retail": 3480, "dist": 2900, "benefit": "Improves memory and cerebrovascular health."},
-    # Cardiovascular Health
     {"code": "A013", "name": "Antilipemic Tea", "category": "Cardiovascular Health", "retail": 2760, "dist": 2300, "benefit": "Helps maintain healthy cholesterol levels."},
     {"code": "A027", "name": "Propolis", "category": "Cardiovascular Health", "retail": 4080, "dist": 3400, "benefit": "Supports heart health and immunity."},
     {"code": "A059", "name": "Lecithin Soft Capsules", "category": "Cardiovascular Health", "retail": 4080, "dist": 3400, "benefit": "Promotes cardiovascular wellness."},
     {"code": "A029", "name": "Spirulina Tablets", "category": "Cardiovascular Health", "retail": 4080, "dist": 3400, "benefit": "Nutrient-rich superfood for heart health."},
     {"code": "A033", "name": "Salviae Miltiorrhizae", "category": "Cardiovascular Health", "retail": 4860, "dist": 4050, "benefit": "Supports healthy circulation and heart function."},
-    # Bone & Joint Health
     {"code": "A056", "name": "Glucosamine Capsule", "category": "Bone & Joint Health", "retail": 4080, "dist": 3400, "benefit": "Supports joint flexibility and bone strength."},
     {"code": "A058", "name": "Natural Liquid Calcium Soft Capsules", "category": "Bone & Joint Health", "retail": 4080, "dist": 3400, "benefit": "Promotes strong bones and healthy joints."},
-    # Anti-Aging
     {"code": "A023", "name": "NMN", "category": "Anti-Aging", "retail": 14700, "dist": 12200, "benefit": "Advanced anti-aging and cellular rejuvenation."},
 ]
 
 # ------------------------------------------------------------
-# CATEGORY METADATA
+# CATEGORY METADATA (Includes 'slug' for URLs)
 # ------------------------------------------------------------
 category_meta = [
     {"name": "Immune Boosters", "slug": "immune-boosters", "icon": "fa-shield-virus",
@@ -86,41 +68,29 @@ def get_categories():
     present = {p["category"] for p in products}
     return [c for c in category_meta if c["name"] in present]
 
-
 def group_products():
     grouped = {}
     for cat in get_categories():
         grouped[cat["name"]] = [p for p in products if p["category"] == cat["name"]]
     return grouped
 
-
 def find_category_by_slug(slug):
     return next((c for c in category_meta if c["slug"] == slug), None)
-
 
 def find_product(code):
     return next((p for p in products if p["code"] == code), None)
 
-
 def get_cart():
-    """Return cart dict {code: qty} from session."""
     return session.get("cart", {})
 
-
 def cart_items():
-    """Return list of (product, qty, subtotal) for the current cart."""
     cart = get_cart()
     items = []
     for code, qty in cart.items():
         p = find_product(code)
         if p:
-            items.append({
-                "product": p,
-                "qty": qty,
-                "subtotal": p["retail"] * qty,
-            })
+            items.append({"product": p, "qty": qty, "subtotal": p["retail"] * qty})
     return items
-
 
 def cart_totals():
     items = cart_items()
@@ -128,15 +98,10 @@ def cart_totals():
     count = sum(i["qty"] for i in items)
     return items, total, count
 
-
-# ------------------------------------------------------------
-# CONTEXT PROCESSOR: makes cart_count available on every page
-# ------------------------------------------------------------
 @app.context_processor
 def inject_cart_count():
     cart = get_cart()
     return {"cart_count": sum(cart.values()) if cart else 0}
-
 
 # ------------------------------------------------------------
 # ROUTES
@@ -148,15 +113,24 @@ def home():
         c["count"] = len([p for p in products if p["category"] == c["name"]])
     return render_template("index.html", categories=cats, products=products)
 
-
 @app.route("/products")
 def products_page():
-    return render_template(
-        "products.html",
-        grouped=group_products(),
-        categories=get_categories(),
-    )
+    return render_template("products.html", grouped=group_products(), categories=get_categories())
 
+@app.route("/search")
+def search():
+    q = request.args.get("q", "").strip()
+    results = []
+    if q:
+        q_lower = q.lower()
+        results = [
+            p for p in products
+            if q_lower in p["name"].lower()
+            or q_lower in p["code"].lower()
+            or q_lower in p["category"].lower()
+            or q_lower in p["benefit"].lower()
+        ]
+    return render_template("search.html", query=q, results=results, categories=get_categories())
 
 @app.route("/category/<slug>")
 def category_page(slug):
@@ -164,13 +138,7 @@ def category_page(slug):
     if not cat:
         abort(404)
     cat_products = [p for p in products if p["category"] == cat["name"]]
-    return render_template(
-        "category.html",
-        category=cat,
-        products=cat_products,
-        categories=get_categories(),
-    )
-
+    return render_template("category.html", category=cat, products=cat_products, categories=get_categories())
 
 @app.route("/product/<code>")
 def product_detail(code):
@@ -179,11 +147,13 @@ def product_detail(code):
         abort(404)
     return render_template("product_detail.html", product=product)
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 @app.route("/join")
 def join():
     return render_template("join.html", products=products, categories=get_categories())
-
 
 # ------------------------------------------------------------
 # CART ROUTES
@@ -197,9 +167,7 @@ def cart_add(code):
     cart[code] = cart.get(code, 0) + 1
     session["cart"] = cart
     flash(f"{p['name']} added to your order.", "success")
-    # Return to the page the user came from
     return redirect(request.referrer or url_for("products_page"))
-
 
 @app.route("/cart/update", methods=["POST"])
 def cart_update():
@@ -218,7 +186,6 @@ def cart_update():
     session["cart"] = cart
     return redirect(url_for("cart_page"))
 
-
 @app.route("/cart/remove/<code>", methods=["POST"])
 def cart_remove(code):
     cart = get_cart()
@@ -226,18 +193,15 @@ def cart_remove(code):
     session["cart"] = cart
     return redirect(url_for("cart_page"))
 
-
 @app.route("/cart/clear", methods=["POST"])
 def cart_clear():
     session["cart"] = {}
     return redirect(url_for("cart_page"))
 
-
 @app.route("/cart")
 def cart_page():
     items, total, count = cart_totals()
     return render_template("cart.html", items=items, total=total, count=count)
-
 
 # ------------------------------------------------------------
 # CHECKOUT / DELIVERY DETAILS
@@ -250,7 +214,6 @@ def checkout():
         return redirect(url_for("products_page"))
 
     if request.method == "POST":
-        # Grab form fields
         data = {
             "name":    request.form.get("name", "").strip(),
             "phone":   request.form.get("phone", "").strip(),
@@ -260,30 +223,33 @@ def checkout():
             "address": request.form.get("address", "").strip(),
             "notes":   request.form.get("notes", "").strip(),
         }
+        
+        delivery_fees = {
+            "Mombasa": 250, "Kilifi": 300, "Kwale": 300, "Taita Taveta": 400,
+            "Nairobi": 350, "Machakos": 350, "Kajiado": 350, "Kiambu": 350,
+            "Nakuru": 400, "Uasin Gishu": 450, "Kisumu": 450,
+            "Kisii": 450, "Kakamega": 450, "Nyeri": 400, "Meru": 450
+        }
+        delivery_fee = delivery_fees.get(data["county"], 500) 
+        grand_total = total + delivery_fee
 
-        # Validate required fields
         required = ["name", "phone", "county", "town"]
         missing = [f for f in required if not data[f]]
         if missing:
             flash("Please fill in all required fields.", "error")
-            return render_template(
-                "checkout.html",
-                items=items, total=total, count=count,
-                form=data,
-            )
+            return render_template("checkout.html", items=items, total=total, count=count, form=data)
 
-        # Build WhatsApp message
         lines = []
         lines.append("Hello Madam Faith, I would like to place an order:")
         lines.append("")
         lines.append("*Order Summary*")
         for i in items:
             p = i["product"]
-            lines.append(
-                f"- {p['name']} ({p['code']}) x{i['qty']} = KES {i['subtotal']:,}"
-            )
+            lines.append(f"- {p['name']} ({p['code']}) x{i['qty']} = KES {i['subtotal']:,}")
         lines.append("")
-        lines.append(f"*Total: KES {total:,}*")
+        lines.append(f"Subtotal: KES {total:,}")
+        lines.append(f"Delivery to {data['county']}: KES {delivery_fee:,}") 
+        lines.append(f"*GRAND TOTAL: KES {grand_total:,}*") 
         lines.append("")
         lines.append("*Delivery Details*")
         lines.append(f"Name: {data['name']}")
@@ -301,32 +267,26 @@ def checkout():
 
         message = "\n".join(lines)
         wa_url = f"https://wa.me/254743599932?text={urllib.parse.quote(message)}"
-
-        # Clear the cart now that the order is sent
         session["cart"] = {}
+        
+        return render_template("order_sent.html", wa_url=wa_url, data=data, total=grand_total)
 
-        return render_template("order_sent.html", wa_url=wa_url, data=data, total=total)
-
-    # GET: render the form, pre-filled if user has session data
     return render_template(
         "checkout.html",
         items=items, total=total, count=count,
-        form={"name": "", "phone": "", "email": "", "county": "",
-              "town": "", "address": "", "notes": ""},
+        form={"name": "", "phone": "", "email": "", "county": "", "town": "", "address": "", "notes": ""},
     )
 
-
 # ------------------------------------------------------------
-# TEMPLATE FILTER: builds WhatsApp order link for a single product
+# TEMPLATE FILTER
 # ------------------------------------------------------------
 @app.template_filter("whatsapp_link")
 def whatsapp_link(product_name, product_code):
     text = f"Hello Madam Faith I want to order {product_name} ({product_code})"
     return f"https://wa.me/254743599932?text={urllib.parse.quote(text)}"
 
-
 # ------------------------------------------------------------
 # RUN
 # ------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

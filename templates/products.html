@@ -3,27 +3,19 @@
 {% block content %}
 
 <section class="container" style="padding: 50px 20px;">
-
-    <div class="section-heading">
-        <h2>All Products</h2>
-    </div>
+    <div class="section-heading"><h2>All Products</h2></div>
     <p class="section-sub">Browse our full catalog. Click any category to see it on its own page.</p>
 
-    <!-- ---------- QUICK JUMP LINKS ---------- -->
     <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 40px;">
         {% for cat in categories %}
-        <a href="/category/{{ cat.slug }}"
-           class="btn btn-outline"
-           style="padding: 7px 16px; font-size: 0.8rem;">
+        <a href="/category/{{ cat.slug }}" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.8rem;">
             <i class="fas {{ cat.icon }}"></i> {{ cat.name }}
         </a>
         {% endfor %}
     </div>
 
-    <!-- ---------- CATEGORY BLOCKS ---------- -->
     {% for cat, cat_products in grouped.items() %}
     <div class="category-block" style="margin-bottom: 60px;">
-
         <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px; padding-bottom: 14px; border-bottom: 2px solid var(--border-light); flex-wrap: wrap;">
             <div style="width: 50px; height: 50px; border-radius: 12px; background: linear-gradient(135deg, var(--purple), var(--green)); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; flex-shrink: 0;">
                 <i class="fas {{ cat.icon }}"></i>
@@ -51,17 +43,23 @@
                 <div>
                     <p style="font-size: 1.15rem; font-weight: 700; color: var(--purple-dark);">KES {{ "{:,}".format(p.retail) }}</p>
                     <p style="font-size: 0.7rem; color: #999; margin-bottom: 10px;">Member Price Available &mdash; Ask on WhatsApp</p>
-                    <a href="{{ p.name|whatsapp_link(p.code) }}" class="btn btn-wa" style="width: 100%; justify-content: center;" target="_blank">
-                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
-                    </a>
+                    <div style="display: flex; gap: 8px; margin-top: 4px;">
+                        <form method="POST" action="/cart/add/{{ p.code }}" style="flex: 1;">
+                            <button type="submit" class="btn btn-purple" style="width: 100%; justify-content: center; padding: 9px; font-size: 0.82rem;">
+                                <i class="fas fa-cart-plus"></i> Add to Order
+                            </button>
+                        </form>
+                        <a href="{{ p.name|whatsapp_link(p.code) }}" class="btn btn-wa" target="_blank"
+                           style="padding: 9px 12px; font-size: 0.82rem;" title="Order directly on WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-
     </div>
     {% endfor %}
-
 </section>
 
 {% endblock %}

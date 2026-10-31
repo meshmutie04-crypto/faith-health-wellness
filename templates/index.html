@@ -6,7 +6,6 @@
 <section style="background: linear-gradient(135deg, #f5f0ff 0%, #e8f5e9 100%); padding: 60px 0;">
     <div class="container">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
-
             <div>
                 <span class="badge" style="background: var(--yellow); color: var(--purple-dark); margin-bottom: 14px; display: inline-block; padding: 4px 12px;">AUTHORIZED DISTRIBUTOR</span>
                 <h1 style="font-size: 2.6rem; font-weight: 800; color: var(--purple-dark); line-height: 1.15; margin-bottom: 14px;">
@@ -30,7 +29,6 @@
                     </a>
                 </div>
             </div>
-
             <div style="background: linear-gradient(135deg, var(--purple), var(--green-dark)); border-radius: 16px; padding: 44px 32px; color: white; text-align: center; box-shadow: 0 12px 40px rgba(123,47,247,0.2);">
                 <i class="fas fa-heartbeat" style="font-size: 3.5rem; margin-bottom: 18px; color: var(--yellow);"></i>
                 <h3 style="font-size: 1.4rem; margin-bottom: 10px; font-weight: 700;">Your Health &mdash; My Priority</h3>
@@ -39,18 +37,37 @@
                     <i class="fas fa-tag"></i> Member prices available &mdash; ask on WhatsApp
                 </div>
             </div>
-
         </div>
     </div>
 </section>
 
-<!-- ==================== 3 PILLARS ==================== -->
-<section class="container" style="padding: 60px 20px;">
+<!-- ==================== FEATURED PROMOTION (POSTER) ==================== -->
+<section class="container" style="padding: 50px 20px 30px;">
     <div class="section-heading">
-        <h2>Our 3 Pillars</h2>
+        <h2>Featured Health Campaign</h2>
     </div>
-    <p class="section-sub">The foundation of everything we do at Faith Health &amp; Wellness.</p>
+    <p class="section-sub">Protect your brain. Protect your life. Support your cardiovascular health today.</p>
+    
+    <!-- The Poster Image -->
+    <div style="border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.12); border: 1px solid var(--border-light);">
+        <img src="/static/images/products.jpeg" 
+             alt="Stroke Awareness and Support - Cardiovascular and Brain Health" 
+             style="width: 100%; height: auto; display: block;">
+    </div>
+    
+    <!-- WhatsApp Call to Action -->
+    <div class="text-center" style="margin-top: 24px;">
+        <a href="https://wa.me/254743599932?text=Hello%20Madam%20Faith%20I%20am%20interested%20in%20the%20Stroke%20Awareness%20products%20(CoQ10,%20Salviae,%20Fish%20Oil)" 
+           class="btn btn-wa" target="_blank" style="padding: 12px 24px; font-size: 0.95rem;">
+            <i class="fab fa-whatsapp"></i> Inquire about these products
+        </a>
+    </div>
+</section>
 
+<!-- ==================== 3 PILLARS ==================== -->
+<section class="container" style="padding: 40px 20px 60px;">
+    <div class="section-heading"><h2>Our 3 Pillars</h2></div>
+    <p class="section-sub">The foundation of everything we do at Faith Health &amp; Wellness.</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px;">
         <div class="card text-center">
             <i class="fas fa-dumbbell" style="font-size: 2.2rem; color: var(--purple); margin-bottom: 14px;"></i>
@@ -70,20 +87,15 @@
     </div>
 </section>
 
-<!-- ==================== SHOP BY CATEGORY (clickable cards) ==================== -->
+<!-- ==================== SHOP BY CATEGORY ==================== -->
 <section style="background: white; padding: 60px 0;">
     <div class="container">
-        <div class="section-heading">
-            <h2>Shop by Category</h2>
-        </div>
+        <div class="section-heading"><h2>Shop by Category</h2></div>
         <p class="section-sub">Click a category to see the products inside. Every product is organized by health concern.</p>
-
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px;">
             {% for cat in categories %}
             <a href="/category/{{ cat.slug }}" class="category-card">
-                <div class="cat-icon">
-                    <i class="fas {{ cat.icon }}"></i>
-                </div>
+                <div class="cat-icon"><i class="fas {{ cat.icon }}"></i></div>
                 <h3>{{ cat.name }}</h3>
                 <p>{{ cat.description }}</p>
                 <div class="cat-footer">
@@ -92,6 +104,41 @@
                 </div>
             </a>
             {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ==================== TESTIMONIALS ==================== -->
+<section class="container" style="padding: 60px 20px;">
+    <div class="section-heading"><h2>What Our Customers Say</h2></div>
+    <p class="section-sub">Real results from people using Eternal Health products.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+        <!-- Review 1 -->
+        <div class="card" style="padding: 24px; background: #fcfcfc;">
+            <div style="color: #ffb400; margin-bottom: 12px;">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <p style="font-style: italic; color: #555; font-size: 0.9rem; margin-bottom: 16px;">"I struggled with sleep for years. After taking the Peanut Sprout, I finally sleep through the night. Madam Faith guided me perfectly."</p>
+            <div style="font-weight: 700; color: var(--purple-dark); font-size: 0.9rem;">— Mary W., Mombasa</div>
+        </div>
+        
+        <!-- Review 2 -->
+        <div class="card" style="padding: 24px; background: #fcfcfc;">
+            <div style="color: #ffb400; margin-bottom: 12px;">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <p style="font-style: italic; color: #555; font-size: 0.9rem; margin-bottom: 16px;">"The Cordyceps Coffee gives me so much energy for my morning runs. I haven't felt this healthy in years. Highly recommend!"</p>
+            <div style="font-weight: 700; color: var(--purple-dark); font-size: 0.9rem;">— John K., Nairobi</div>
+        </div>
+        
+        <!-- Review 3 -->
+        <div class="card" style="padding: 24px; background: #fcfcfc;">
+            <div style="color: #ffb400; margin-bottom: 12px;">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <p style="font-style: italic; color: #555; font-size: 0.9rem; margin-bottom: 16px;">"I bought the Glucosamine for my knee pain. It took a few weeks, but the difference is amazing. Delivery to Kilifi was fast."</p>
+            <div style="font-weight: 700; color: var(--purple-dark); font-size: 0.9rem;">— Aisha M., Kilifi</div>
         </div>
     </div>
 </section>
@@ -118,5 +165,14 @@
         </div>
     </div>
 </section>
+
+<!-- ==================== FLOATING CART (If items added) ==================== -->
+{% if cart_count and cart_count > 0 %}
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 200;">
+    <a href="/cart" class="btn btn-purple" style="box-shadow: 0 6px 20px rgba(123,47,247,0.35); padding: 14px 22px; font-size: 0.92rem;">
+        <i class="fas fa-shopping-basket"></i> View Order ({{ cart_count }})
+    </a>
+</div>
+{% endif %}
 
 {% endblock %}

@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faith Health &amp; Wellness — Authorized Eternal International Distributor</title>
 
+    <!-- Favicon (Purple Heart) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💜</text></svg>">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -73,7 +76,6 @@
         }
         .header-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 
-        /* ---------- CART ICON IN HEADER ---------- */
         .cart-link {
             position: relative;
             display: inline-flex;
@@ -99,7 +101,6 @@
             margin-left: 2px;
         }
 
-        /* ---------- BUTTONS ---------- */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -122,7 +123,6 @@
         .btn-danger { background: #e53935; color: white; }
         .btn-danger:hover { background: #c62828; }
 
-        /* ---------- NAVIGATION ---------- */
         nav {
             background: white;
             border-bottom: 1px solid var(--border-light);
@@ -132,11 +132,19 @@
         }
         .nav-inner {
             display: flex;
-            gap: 4px;
+            gap: 8px;
             padding: 10px 0;
             overflow-x: auto;
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            flex-shrink: 1;
         }
         .nav-inner a {
             padding: 8px 18px;
@@ -146,16 +154,34 @@
             font-size: 0.9rem;
             transition: 0.25s;
             border-radius: 6px;
+            white-space: nowrap;
         }
         .nav-inner a:hover { background: #f5f0ff; color: var(--purple-dark); }
         .nav-inner a.active { background: var(--purple); color: white; }
 
-        /* ---------- FLASH MESSAGES ---------- */
-        .flash-container {
-            max-width: 1200px;
-            margin: 14px auto 0;
-            padding: 0 20px;
+        .search-form {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-shrink: 0;
+            margin-left: 12px;
         }
+        .search-form input {
+            padding: 7px 14px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: 'Poppins', sans-serif;
+            width: 220px;
+            outline: none;
+            transition: 0.2s;
+        }
+        .search-form input:focus {
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(123,47,247,0.12);
+        }
+
+        .flash-container { max-width: 1200px; margin: 14px auto 0; padding: 0 20px; }
         .flash {
             padding: 12px 18px;
             border-radius: 8px;
@@ -244,7 +270,6 @@
             letter-spacing: 0.3px;
         }
 
-        /* ---------- FORM ELEMENTS ---------- */
         .form-group { margin-bottom: 16px; }
         .form-group label {
             display: block;
@@ -321,6 +346,9 @@
             .btn { padding: 8px 14px; font-size: 0.82rem; }
             .section-heading h2 { font-size: 1.5rem; }
             .form-row { grid-template-columns: 1fr; }
+            .nav-inner { flex-wrap: wrap; }
+            .search-form { width: 100%; margin-left: 0; margin-top: 6px; }
+            .search-form input { width: 100%; flex: 1; }
         }
     </style>
 </head>
@@ -357,13 +385,22 @@
 
     <nav>
         <div class="container nav-inner">
-            <a href="/" class="{% if active_page == 'home' %}active{% endif %}">Home</a>
-            <a href="/products" class="{% if active_page == 'products' %}active{% endif %}">All Products</a>
-            <a href="/join" class="{% if active_page == 'join' %}active{% endif %}">Become a Member</a>
+            <div class="nav-links">
+                <a href="/" class="{% if active_page == 'home' %}active{% endif %}">Home</a>
+                <a href="/products" class="{% if active_page == 'products' %}active{% endif %}">All Products</a>
+                <a href="/about" class="{% if active_page == 'about' %}active{% endif %}">About Us</a>
+                <a href="/join" class="{% if active_page == 'join' %}active{% endif %}">Become a Member</a>
+            </div>
+            <form action="/search" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Search products or code..."
+                       value="{{ request.args.get('q', '') if request.endpoint == 'search' else '' }}">
+                <button type="submit" class="btn btn-purple" style="padding: 7px 14px; font-size: 0.85rem;">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
     </nav>
 
-    <!-- Flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <div class="flash-container">

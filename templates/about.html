@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% set active_page = 'about' %}
+{% block content %}
+
+<section style="background: linear-gradient(135deg, #f5f0ff 0%, #e8f5e9 100%); padding: 60px 0;">
+    <div class="container text-center">
+        <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--purple-dark); margin-bottom: 10px;">Meet Madam Faith</h1>
+        <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto;">Your Health - My Priority</p>
+    </div>
+</section>
+
+<section class="container" style="padding: 60px 20px; max-width: 900px;">
+    <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; align-items: center;">
+        
+        <!-- Placeholder for her photo -->
+        <div style="background: #e0e0e0; border-radius: 16px; height: 350px; display: flex; align-items: center; justify-content: center; border: 2px dashed #ccc;">
+            <div class="text-center" style="color: #888;">
+                <i class="fas fa-user-circle" style="font-size: 4rem; margin-bottom: 10px;"></i>
+                <p style="font-size: 0.9rem;">Photo of<br>Madam Faith</p>
+            </div>
+        </div>
+
+        <div>
+            <h2 style="font-size: 1.8rem; color: var(--purple-dark); margin-bottom: 16px;">From Cyber Café Owner to Eternal Distributor</h2>
+            <p style="color: #555; font-size: 0.95rem; line-height: 1.8; margin-bottom: 16px;">
+                "Health is the most crucial thing in life. You may have money but without good health you cannot enjoy peace. I guide you on how to walk a journey of good Health, Joy and Peace."
+            </p>
+            <p style="color: #555; font-size: 0.95rem; line-height: 1.8; margin-bottom: 24px;">
+                Based in Mombasa, Kenya, I am proud to be an authorized distributor of Eternal International Health Products. After seeing how these natural supplements transformed the lives of my own family and friends, I dedicated my life to sharing them with you. Whether you need better sleep, more energy, or support for your heart and immune system, I am here to guide you.
+            </p>
+            <div style="display: flex; gap: 12px;">
+                <a href="https://wa.me/254743599932?text=Hello%20Madam%20Faith,%20I%20would%20like%20to%20talk%20to%20you" class="btn btn-wa" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Chat with me
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
